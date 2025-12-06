@@ -4,6 +4,8 @@ Este projeto é uma aplicação web simples que gera automaticamente códigos em
 
 Ao escrever um texto (ex: *Hello, World!*), o sistema mostra como exibir esse texto em diferentes linguagens, com a opção de copiar o código com apenas um clique.
 
+Acesse o projeto hospedado [aqui](https://htmlpreview.github.io/?https://github.com/alfredosilva12/print-generator/blob/main/index.html)
+
 ---
 
 ## ✅ Funcionalidades
@@ -49,3 +51,4 @@ Ao escrever um texto (ex: *Hello, World!*), o sistema mostra como exibir esse te
 ## 📄 Licença
 
 Projeto livre para uso educacional e pessoal.
+
