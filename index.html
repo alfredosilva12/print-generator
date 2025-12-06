@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerador de Código Multi-Linguagem</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 1.1em;
+      }
+
+      .input-section {
+        margin-bottom: 30px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+        font-weight: 600;
+        font-size: 1.1em;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        transition: border-color 0.3s;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .languages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .language-card {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        border: 2px solid #e9ecef;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .language-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .language-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .language-name {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .copy-btn {
+        padding: 8px 16px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.3s;
+      }
+
+      .copy-btn:hover {
+        background: #5568d3;
+      }
+
+      .copy-btn.copied {
+        background: #28a745;
+      }
+
+      .code-block {
+        background: #282c34;
+        color: #abb2bf;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        overflow-x: auto;
+        white-space: pre;
+        line-height: 1.5;
+      }
+
+      .keyword {
+        color: #c678dd;
+      }
+      .string {
+        color: #98c379;
+      }
+      .function {
+        color: #61afef;
+      }
+      .comment {
+        color: #5c6370;
+      }
+      .class-name {
+        color: #e5c07b;
+      }
+
+      @media (max-width: 768px) {
+        .languages-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 1.8em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🚀 Gerador de Código Multi-Linguagem</h1>
+      <p class="subtitle">
+        Digite um texto e veja como exibi-lo em diferentes linguagens de
+        programação
+      </p>
+
+      <div class="input-section">
+        <label for="userInput">Digite seu texto:</label>
+        <input type="text" id="userInput" value="Hello, World!" />
+      </div>
+
+      <div class="languages-grid" id="languagesGrid"></div>
+    </div>
+
+    <script>
+      const input = document.getElementById("userInput");
+      const grid = document.getElementById("languagesGrid");
+
+      const languages = {
+        javascript: {
+          name: "JavaScript",
+          generate: (text) => `console.log("${text}");`,
+        },
+        python: {
+          name: "Python",
+          generate: (text) => `print("${text}")`,
+        },
+        java: {
+          name: "Java < 25",
+          generate: (text) => `public class Main {
+    public static void main(String[] args) {
+        System.out.println("${text}");
+    }
+}`,
+        },
+        java25: {
+          name: "Java 25",
+          generate: (text) => `void main() {
+    IO.println("${text}");
+}`,
+        },
+        csharp: {
+          name: "C#",
+          generate: (text) => `using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("${text}");
+    }
+}`,
+        },
+        cpp: {
+          name: "C++",
+          generate: (text) => `#include <iostream>
+
+int main() {
+    std::cout << "${text}" << std::endl;
+    return 0;
+}`,
+        },
+        c: {
+          name: "C",
+          generate: (text) => `#include <stdio.h>
+
+int main() {
+    printf("${text}\\n");
+    return 0;
+}`,
+        },
+        php: {
+          name: "PHP",
+          generate: (text) => `<?php
+echo "${text}";
+?>`,
+        },
+        ruby: {
+          name: "Ruby",
+          generate: (text) => `puts "${text}"`,
+        },
+        go: {
+          name: "Go",
+          generate: (text) => `package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("${text}")
+}`,
+        },
+        rust: {
+          name: "Rust",
+          generate: (text) => `fn main() {
+    println!("${text}");
+}`,
+        },
+        swift: {
+          name: "Swift",
+          generate: (text) => `print("${text}")`,
+        },
+        kotlin: {
+          name: "Kotlin",
+          generate: (text) => `fun main() {
+    println("${text}")
+}`,
+        },
+        lua: {
+          name: "Lua",
+          generate: (text) => `print("${text}")`,
+        },
+        elixir: {
+          name: "Elixir",
+          generate: (text) => `IO.puts("${text}")`,
+        },
+        vb: {
+          name: "Visual Basic",
+          generate: (text) => `Module Program
+    Sub Main()
+        Console.WriteLine("${text}")
+    End Sub
+End Module`,
+        },
+      };
+
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function renderLanguages() {
+        const text = input.value || "";
+        grid.innerHTML = "";
+
+        // Linguagens que compartilham a mesma sintaxe
+        const simplePrintLanguages = ["python", "swift", "lua"];
+        const createdSimpleCard = {};
+
+        Object.entries(languages).forEach(([key, lang]) => {
+          if (simplePrintLanguages.includes(key)) {
+            if (!createdSimpleCard["simplePrint"]) {
+              const code = languages["python"].generate(text);
+
+              const card = document.createElement("div");
+              card.className = "language-card";
+
+              const langNames = [
+                languages["python"].name,
+                languages["swift"].name,
+                languages["lua"].name,
+              ];
+
+              card.innerHTML = `
+                    <div class="language-header">
+                        <div class="language-name">${langNames.join(
+                          " / "
+                        )}</div>
+                        <button class="copy-btn" onclick="copyCode('python', this)">
+                            📋 Copiar
+                        </button>
+                    </div>
+                    <div class="code-block" id="code-simplePrint">${escapeHtml(
+                      code
+                    )}</div>
+                `;
+
+              grid.appendChild(card);
+              createdSimpleCard["simplePrint"] = true;
+            }
+          } else {
+            const code = lang.generate(text);
+
+            const card = document.createElement("div");
+            card.className = "language-card";
+
+            card.innerHTML = `
+                    <div class="language-header">
+                        <div class="language-name">${lang.name}</div>
+                        <button class="copy-btn" onclick="copyCode('${key}', this)">
+                            📋 Copiar
+                        </button>
+                    </div>
+                    <div class="code-block" id="code-${key}">${escapeHtml(
+              code
+            )}</div>
+                `;
+
+            grid.appendChild(card);
+          }
+        });
+      }
+
+      function copyCode(langKey, btn) {
+        const code = languages[langKey].generate(
+          input.value || "Hello, World!"
+        );
+
+        navigator.clipboard
+          .writeText(code)
+          .then(() => {
+            const originalText = btn.textContent;
+            btn.textContent = "✓ Copiado!";
+            btn.classList.add("copied");
+
+            setTimeout(() => {
+              btn.textContent = originalText;
+              btn.classList.remove("copied");
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error("Erro ao copiar:", err);
+            alert("Erro ao copiar o código");
+          });
+      }
+
+      input.addEventListener("input", renderLanguages);
+
+      // Renderizar inicialmente
+      renderLanguages();
+    </script>
+  </body>
+</html>
